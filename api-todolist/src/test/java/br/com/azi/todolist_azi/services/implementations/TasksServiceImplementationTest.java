@@ -53,7 +53,7 @@ class TasksServiceImplementationTest {
 
     @Test
     @DisplayName("it should be able to create a new task")
-    void createTask() throws Exception {
+    void createTask() {
         CreateTaskDTO task = new CreateTaskDTO(
                 faker.lorem().characters(10,20),
                 faker.lorem().characters(0, 30)
@@ -71,13 +71,13 @@ class TasksServiceImplementationTest {
 
     @Test
     @DisplayName("it should not be able create a new task")
-    void createTaskFail() throws Exception {
+    void createTaskFail() {
         CreateTaskDTO task = new CreateTaskDTO(
                 "",
                 faker.lorem().characters(0,30)
         );
 
-        Exception exception = assertThrows(EmptyTitleTaskException.class, () -> {
+        EmptyTitleTaskException exception = assertThrows(EmptyTitleTaskException.class, () -> {
             this.tasksServiceImplementation.createTask(task);
         });
 
@@ -118,7 +118,7 @@ class TasksServiceImplementationTest {
 
     @Test
     @DisplayName("it should be able to return a task by id")
-    void getTaskById() throws Exception {
+    void getTaskById() {
         when(this.tasksRepository.findById(1L)).thenReturn(Optional.of(expectedTask));
 
         Tasks actualTask = this.tasksServiceImplementation.getTaskById(1L);
@@ -130,7 +130,7 @@ class TasksServiceImplementationTest {
     @Test
     @DisplayName("it not should be able to return a task by id")
     void getTaskByIdFail() {
-        Exception exception = assertThrows(TaskNotFoundException.class, () -> {
+        TaskNotFoundException exception = assertThrows(TaskNotFoundException.class, () -> {
             this.tasksServiceImplementation.getTaskById(expectedTask.getId());
         });
 
@@ -139,8 +139,8 @@ class TasksServiceImplementationTest {
     }
 
     @Test
-    @DisplayName("it should not be able to update a task")
-    void updateTask() throws Exception {
+    @DisplayName("it should be able to update a task")
+    void updateTask() {
         Random random = new Random();
         boolean randomValue = random.nextBoolean();
         UpdateTaskDTO updateTaskDTO = new UpdateTaskDTO(
@@ -168,7 +168,7 @@ class TasksServiceImplementationTest {
 
     @Test
     @DisplayName("it not should be able to update a task")
-    void updateTaskFail() throws Exception {
+    void updateTaskFail() {
         Random random = new Random();
         boolean randomValue = random.nextBoolean();
 
@@ -178,7 +178,7 @@ class TasksServiceImplementationTest {
                 Optional.of(randomValue)
         );
 
-        Exception exception = assertThrows(TaskNotFoundException.class, () -> {
+        TaskNotFoundException exception = assertThrows(TaskNotFoundException.class, () -> {
            this.tasksServiceImplementation.updateTask(expectedTask.getId(), updateTaskDTO);
         });
 
@@ -189,7 +189,7 @@ class TasksServiceImplementationTest {
 
     @Test
     @DisplayName("it should be able to delete a task")
-    void deleteTask() throws Exception {
+    void deleteTask() {
         when(this.tasksRepository.findById(expectedTask.getId())).thenReturn(Optional.of(expectedTask));
         doNothing().when(this.tasksRepository).deleteById(expectedTask.getId());
 
@@ -201,8 +201,8 @@ class TasksServiceImplementationTest {
 
     @Test
     @DisplayName("it not should be able to delete a task")
-    void deleteTaskFail() throws Exception {
-        Exception exception = assertThrows(TaskNotFoundException.class, () -> {
+    void deleteTaskFail() {
+        TaskNotFoundException exception = assertThrows(TaskNotFoundException.class, () -> {
             this.tasksServiceImplementation.deleteTask(expectedTask.getId());
         });
 
