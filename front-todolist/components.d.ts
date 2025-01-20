@@ -7,10 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    AppFooter: typeof import('./src/components/AppFooter.vue')['default']
     Header: typeof import('./src/components/Header.vue')['default']
-    HelloWorld: typeof import('./src/components/HelloWorld.vue')['default']
-    ModalUpdate: typeof import('./src/components/ModalUpdate.vue')['default']
-    ModalUpdateTask: typeof import('./src/components/ModalUpdateTask.vue')['default']
+    TaskList: typeof import('./src/components/TaskList.vue')['default']
   }
 }
