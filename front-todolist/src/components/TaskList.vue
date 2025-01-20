@@ -12,9 +12,13 @@
       </div>
 
       <div class="ml-auto d-flex flex-row align-items-center justify-center">
-        <v-checkbox :model-value="task.completed" hide-details />
-        <v-btn>Editar</v-btn>
-        <v-btn class="ml-3">Excluir</v-btn>
+        <v-checkbox
+          v-model="task.completed"
+          hide-details
+          @change="updateCompleteTask(task)"
+        />
+        <v-btn @click="openEditModal(task)">Editar</v-btn>
+        <v-btn class="ml-3" @click="deleteTask(task.id)">Excluir</v-btn>
       </div>
     </v-card>
   </div>
@@ -24,12 +28,33 @@
 </template>
 
 <script>
+import axios from "axios";
+
 export default {
   name: "TaskList",
   props: {
     tasks: {
       type: Array,
       required: true,
+    },
+  },
+  methods: {
+    openEditModal(task) {
+      this.$emit("edit-task", task);
+    },
+    deleteTask(taskId) {
+      this.$emit("delete-task", taskId);
+    },
+    async updateCompleteTask(task) {
+      try {
+        const response = await axios.put(
+          `http://localhost:8080/api/v1/tasks/${task.id}`,
+          { ...task, completed: task.completed }
+        );
+        this.$emit("update-task", response.data);
+      } catch (error) {
+        console.error("Failed at update task", error);
+      }
     },
   },
 };
