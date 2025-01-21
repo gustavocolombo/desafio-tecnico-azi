@@ -1,13 +1,13 @@
 <template>
-  <v-app theme="light">
-    <Header />
+  <v-app theme="dark">
+    <Header @search-task="fetchTaskById" />
     <v-main>
       <v-container
         class="d-flex flex-column justify-center align-items-center mt-5"
       >
-        <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center mt-12">
           <h1 class="text-center mr-auto">Minhas Tarefas</h1>
-          <v-btn color="blue" @click="openCreateModal">
+          <v-btn style="background-color: #424242" @click="openCreateModal">
             <span>Criar tarefa</span>
             <v-icon>mdi-plus</v-icon>
           </v-btn>
@@ -36,6 +36,8 @@ import axios from "axios";
 import TaskList from "./components/TaskList.vue";
 import ModalCreateTask from "./components/ModalCreateTask.vue";
 import ModalUpdateTask from "./components/ModalUpdateTask.vue";
+import { toast } from "vue3-toastify";
+import "vue3-toastify/dist/index.css";
 
 export default {
   components: { TaskList, ModalCreateTask, ModalUpdateTask },
@@ -52,6 +54,16 @@ export default {
         tasks.value = response.data;
       } catch (error) {
         console.error("Failed at get tasks", error);
+      }
+    };
+
+    const fetchTaskById = async (taskId) => {
+      try {
+        await axios.get(`http://localhost:8080/api/v1/tasks/${taskId}`);
+        toast.success("Tarefa encontrada com sucesso");
+      } catch (error) {
+        console.error("Failed at get task", error);
+        toast.error("Tarefa não encontrada");
       }
     };
 
@@ -72,8 +84,10 @@ export default {
 
         tasks.value.push(response.data);
         closeCreateModal();
+        toast.success("Tarefa salva com sucesso");
       } catch (error) {
         console.error("Failed at create task", error);
+        toast.error("Falha ao criar a tarefa, o título não pode ser vazio");
       }
     };
 
@@ -98,8 +112,10 @@ export default {
         }
 
         editModal.value = false;
+        toast.success("Tarefa atualizada com sucesso");
       } catch (error) {
         console.error("Failed at update task", error);
+        toast.error("Falha ao atualizar a tarefa");
       }
     };
 
@@ -107,8 +123,10 @@ export default {
       try {
         await axios.delete(`http://localhost:8080/api/v1/tasks/${taskId}`);
         tasks.value = tasks.value.filter((task) => task.id !== taskId);
+        toast.success("Tarefa deletada com sucesso");
       } catch (error) {
         console.error("Failed at delete task", error);
+        toast.error("Falha ao deletar a tarefa");
       }
     };
 
@@ -124,6 +142,7 @@ export default {
       editModal,
       selectedTask,
       deleteTask,
+      fetchTaskById,
     };
   },
 };

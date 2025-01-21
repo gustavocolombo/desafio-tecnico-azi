@@ -4,25 +4,37 @@
       v-for="task in tasks"
       :key="task.id"
       class="my-3 pa-3 rounded-lg elevation-3 d-flex flex-row justify-between align-items-center"
-      variant="tonal"
+      style="background-color: #424242"
     >
       <div class="d-flex flex-column">
         <h3>{{ task.title }}</h3>
         <span>{{ task.description }}</span>
       </div>
 
-      <div class="ml-auto d-flex flex-row align-items-center justify-center">
+      <div class="ml-auto d-flex flex-row" style="align-items: center">
         <v-checkbox
           v-model="task.completed"
           hide-details
           @change="updateCompleteTask(task)"
+          color="green"
         />
-        <v-btn @click="openEditModal(task)">Editar</v-btn>
-        <v-btn class="ml-3" @click="deleteTask(task.id)">Excluir</v-btn>
+        <v-btn
+          @click="openEditModal(task)"
+          style="background-color: #ffb300; color: white"
+        >
+          <v-icon icon="mdi-pencil"></v-icon>
+        </v-btn>
+        <v-btn
+          class="ml-3"
+          @click="deleteTask(task.id)"
+          style="background-color: #ef5350; color: white"
+        >
+          <v-icon icon="mdi-delete"></v-icon>
+        </v-btn>
       </div>
     </v-card>
   </div>
-  <div v-else>
+  <div v-else class="mt-12 font-weight-bold text-subtitle-1">
     <p>Ainda não há tarefas criadas</p>
   </div>
 </template>

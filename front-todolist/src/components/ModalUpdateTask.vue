@@ -7,11 +7,20 @@
       <v-card-text>
         <v-text-field v-model="localTask.title" label="Título" />
         <v-textarea v-model="localTask.description" label="Descrição" />
-        <v-checkbox v-model="localTask.completed" label="Completada" />
+        <v-checkbox
+          v-model="localTask.completed"
+          label="Marcar como completada"
+        />
       </v-card-text>
       <v-card-actions>
-        <v-btn class="bg-green" @click="saveTask">Salvar</v-btn>
-        <v-btn class="bg-red" @click="closeModal">Cancelar</v-btn>
+        <v-btn style="background-color: #66bb6a; color: white" @click="saveTask"
+          >Salvar</v-btn
+        >
+        <v-btn
+          style="background-color: #ef5350; color: white"
+          @click="closeModal"
+          >Cancelar</v-btn
+        >
       </v-card-actions>
     </v-card>
   </v-dialog>
